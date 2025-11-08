@@ -18,7 +18,6 @@ class Obj {
                 if (startListPosition == endListPosition){
                     search = false
                 }
-                if ()
             }
         }
         return IntArray(-1,)
