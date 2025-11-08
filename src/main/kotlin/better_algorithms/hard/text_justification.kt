@@ -41,6 +41,10 @@ fun testCases(){
 }
 
 class textJustification {
+
+    /**
+     *    this is my first submission that worked
+     */
     fun fullJustify(words: Array<String>, maxWidth: Int): List<String> {
 
         val lines = mutableListOf<Pair<MutableList<String>, Int>>()
@@ -136,6 +140,71 @@ class textJustification {
 
         return output
     }
+
+    /**
+     *    simplifying my original answer
+     */
+
+    fun fullJustifySimplified(words: Array<String>, maxWidth: Int): List<String> {
+        val lines = mutableListOf<Pair<List<String>, Int>>()
+        var currentWords = mutableListOf<String>()
+        var currentLength = 0
+
+        for (word in words) {
+            val extraSpace = if (currentWords.isEmpty()) 0 else 1
+            if (currentLength + word.length + extraSpace <= maxWidth) {
+                currentWords.add(word)
+                currentLength += word.length + extraSpace
+            } else {
+                lines.add(currentWords.toList() to currentWords.sumOf { it.length })
+                currentWords = mutableListOf(word)
+                currentLength = word.length
+            }
+        }
+        if (currentWords.isNotEmpty()) {
+            lines.add(currentWords.toList() to currentWords.sumOf { it.length })
+        }
+
+        val output = mutableListOf<String>()
+
+        for ((index, linePair) in lines.withIndex()) {
+            val (words, totalWordLength) = linePair
+
+            val isLastLine = index == lines.lastIndex
+            val line = when {
+                isLastLine -> {
+                    val joined = words.joinToString(" ")
+                    joined + " ".repeat(maxWidth - joined.length)
+                }
+
+                words.size == 1 -> {
+                    words.first().padEnd(maxWidth, ' ')
+                }
+
+                else -> {
+                    val remaining = maxWidth - totalWordLength
+                    val dividers = words.size - 1
+                    val baseSpaces = remaining / dividers
+                    var extraSpaces = remaining % dividers
+
+                    buildString {
+                        for ((i, word) in words.withIndex()) {
+                            append(word)
+                            if (i < dividers) {
+                                val spaceCount = baseSpaces + if (extraSpaces-- > 0) 1 else 0
+                                append(" ".repeat(spaceCount))
+                            }
+                        }
+                    }
+                }
+            }
+
+            output.add(line)
+        }
+
+        return output
+    }
+
 }
 
 
